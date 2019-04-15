@@ -15,6 +15,18 @@ module BranchDecisionMaking(
     input wire [31:0] Operand1,Operand2,
     output reg BranchE
     );
+    always@(*)
+    begin
+        case(BranchTypeE)
+            `NOBRANCH: BranchE <= 1'b0;
+            `BEQ: BranchE <= (Operand1 == Operand2) ? 1'b1 : 1'b0;
+            `BNE: BranchE <= (Operand1 == Operand2) ? 1'b0 : 1'b1;
+            `BLT: BranchE <= ($signed(Operand1) < $signed(Operand2)) ? 1'b1 : 1'b0;
+            `BLTU: BranchE <= ($unsigned(Operand1) < $unsigned(Operand2)) ? 1'b1 : 1'b0;
+            `BGE: BranchE <= ($signed(Operand1) < $signed(Operand2)) ? 1'b0 : 1'b1;
+            `BGEU: BranchE <= ($unsigned(Operand1) < $unsigned(Operand2)) ? 1'b0 : 1'b1;
+        default: BranchE <= 1'b0;
+    end
 endmodule
 
 //功能和接口说明
