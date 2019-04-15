@@ -14,6 +14,14 @@ module NPC_Generator(
     input wire BranchE,JalD,JalrE,
     output reg [31:0] PC_In
     );
+
+    always@(*)
+    begin
+        PC_In <= (BranchE == 1'b1) ? BranchTarget :
+        (JalrE == 1'b1) ? JalrTarget :
+        (JalD == 1'b1) ? JalTarget :
+        PCF + 4;
+    end
 endmodule
 
 //功能说明
