@@ -16,6 +16,23 @@ module ALU(
     input wire [3:0] AluContrl,
     output reg [31:0] AluOut
     );
+    always@(*)
+    begin
+        case(AluContrl)
+        `SLL:AluOut <= Operand1 << Operand2[4:0];
+        `SRL:AluOut <= Operand1 >> Operand2[4:0];
+        `SRA:AluOut <= ($signed(Operand1)) >>> Operand2[4:0];
+        `ADD:AluOut <= Operand1 + Operand2;
+        `SUB:AluOut <= Operand1 - Operand2;
+        `XOR:AluOut <= Operand1 ^ Operand2;
+        `OR :AluOut <= Operand1 | Operand2;
+        `AND:AluOut <= Operand1 & Operand2;
+        `SLT:AluOut <= ($signed(Operand1) < $signed(Operand2))?32'h00000001:32'h00000000;
+        `SLTU:AluOut <= ($unsigned(Operand1) < $unsigned(Operand2))?32'h00000001:32'h00000000;
+        `LUI:AluOut <= Operand2;
+        default AluOut<=32'b00000000;
+        endcase
+    end
 endmodule
 
 //功能和接口说明
