@@ -17,6 +17,25 @@ module DataExt(
     input wire [2:0] RegWriteW,
     output reg [31:0] OUT
     );    
+
+    wire [7:0] SelectByte;
+    wire [15:0] SelectHw;
+
+    assign SelectHw = (LoadedBytesSelect[1] == 1'b1) ? IN[31:16] : IN[15:0];
+    assign SelectByte = (LoadedBytesSelect[0] == 1'b1) ? SelectHw[15:8] : SelectHw[7:0];
+
+    always@(*)
+        begin
+            case(RegWriteW)
+            `NOREGWRITE: OUT <= 32'h00000000;
+            `LB: OUT <= (SelectByte[7] == 1'b1) ? {24'hffffff, SelectByte} : {24'h000000, SelectByte};
+            `LH: OUT <= (SelectHw[15] == 1'b1) ? {16'hffff, SelectHw} : {16'h0000, SelectHw};
+            `LW: OUT <= IN;
+            `LBU: OUT <= {24'h000000, SelectByte};
+            `LHU: OUT <= {16'h0000, SelectHw};
+            default: OUT <= 32'h00000000;
+            endcase
+        end    
 endmodule
 
 //功能说明
