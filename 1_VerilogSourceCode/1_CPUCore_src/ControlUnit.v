@@ -25,7 +25,7 @@ module ControlUnit(
     output reg [3:0] AluContrlD,
     output wire [1:0] AluSrc2D,
     output wire AluSrc1D,
-    output reg [2:0] ImmType        
+    output reg [2:0] ImmType
     );
 
     assign JalD = (Op == 7'b1101111) ? 1'b1 : 1'b0;
@@ -99,15 +99,15 @@ module ControlUnit(
                 RegReadD <= 2'b11;
                 BranchTypeD <= `NOBRANCH;
                 case(Fn3)
-                    3'b000: AluContrlD <= (Fn7 == 7'b00000000) ? `ADD : `SUB;
+                    3'b000: AluContrlD <= (Fn7 == 7'b0000000) ? `ADD : `SUB;
                     3'b001: AluContrlD <= `SLL;
                     3'b010: AluContrlD <= `SLT;
                     3'b011: AluContrlD <= `SLTU;
                     3'b100: AluContrlD <= `XOR;
-                    3'b101: AluContrlD <= (Fn7 == 7'b00000000) ? `SRL : `SRA;
+                    3'b101: AluContrlD <= (Fn7 == 7'b0000000) ? `SRL : `SRA;
                     3'b110: AluContrlD <= `OR;
                     3'b111: AluContrlD <= `AND;
-                endcase
+                endcase // case (Fn3)
                 ImmType <= `RTYPE;
             end
 
@@ -123,7 +123,7 @@ module ControlUnit(
                     3'b010: AluContrlD <= `SLT;
                     3'b011: AluContrlD <= `SLTU;
                     3'b100: AluContrlD <= `XOR;
-                    3'b101: AluContrlD <= (Fn7 == 7'b00000000) ? `SRL : `SRA;
+                    3'b101: AluContrlD <= (Fn7 == 7'b0000000) ? `SRL : `SRA;
                     3'b110: AluContrlD <= `OR;
                     3'b111: AluContrlD <= `AND;
                 endcase

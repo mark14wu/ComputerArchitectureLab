@@ -7,27 +7,28 @@
 // Module Name: BranchDecisionMaking
 // Target Devices: Nexys4
 // Tool Versions: Vivado 2017.4.1
-// Description: Decide whether to branch 
+// Description: Decide whether to branch
 //////////////////////////////////////////////////////////////////////////////////
-`include "Parameters.v"   
+`include "Parameters.v"
 module BranchDecisionMaking(
     input wire [2:0] BranchTypeE,
     input wire [31:0] Operand1,Operand2,
     output reg BranchE
     );
     always@(*)
-    begin
-        case(BranchTypeE)
-            `NOBRANCH: BranchE <= 1'b0;
-            `BEQ: BranchE <= (Operand1 == Operand2) ? 1'b1 : 1'b0;
-            `BNE: BranchE <= (Operand1 == Operand2) ? 1'b0 : 1'b1;
-            `BLT: BranchE <= ($signed(Operand1) < $signed(Operand2)) ? 1'b1 : 1'b0;
-            `BLTU: BranchE <= ($unsigned(Operand1) < $unsigned(Operand2)) ? 1'b1 : 1'b0;
-            `BGE: BranchE <= ($signed(Operand1) < $signed(Operand2)) ? 1'b0 : 1'b1;
-            `BGEU: BranchE <= ($unsigned(Operand1) < $unsigned(Operand2)) ? 1'b0 : 1'b1;
-        default: BranchE <= 1'b0;
-    end
-endmodule
+      begin
+         case(BranchTypeE)
+           `NOBRANCH: BranchE <= 1'b0;
+           `BEQ: BranchE <= (Operand1 == Operand2) ? 1'b1 : 1'b0;
+           `BNE: BranchE <= (Operand1 == Operand2) ? 1'b0 : 1'b1;
+           `BLT: BranchE <= ($signed(Operand1) < $signed(Operand2)) ? 1'b1 : 1'b0;
+           `BLTU: BranchE <= ($unsigned(Operand1) < $unsigned(Operand2)) ? 1'b1 : 1'b0;
+           `BGE: BranchE <= ($signed(Operand1) < $signed(Operand2)) ? 1'b0 : 1'b1;
+           `BGEU: BranchE <= ($unsigned(Operand1) < $unsigned(Operand2)) ? 1'b0 : 1'b1;
+           default: BranchE <= 1'b0;
+         endcase // case (BranchTypeE)
+      end // always@ (*)
+endmodule // BranchDecisionMaking
 
 //功能和接口说明
     //BranchDecisionMaking接受两个操作数，根据BranchTypeE的不同，进行不同的判断，当分支应该taken时，令BranchE=1'b1

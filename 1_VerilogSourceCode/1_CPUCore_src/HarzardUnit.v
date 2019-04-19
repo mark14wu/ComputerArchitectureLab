@@ -23,102 +23,99 @@ module HarzardUnit(
     //Stall and Flush signals generate
     always@(*)
     begin
-        if (CpuRst == 1'b1)
-          begin
+       if (CpuRst == 1'b1)
+         begin
 
-                FlushF <= 1;
-                FlushD <= 1;
-                FlushE <= 1;
-                FlushF <= 1;
-                FlushM <= 1;
-                FlushW <= 1;
+            FlushF <= 1;
+            FlushD <= 1;
+            FlushE <= 1;
+            FlushF <= 1;
+            FlushM <= 1;
+            FlushW <= 1;
 
-                StallF <= 0;
-                StallD <= 0;
-                StallE <= 0;
-                StallM <= 0;
-                StallW <= 0;
+            StallF <= 0;
+            StallD <= 0;
+            StallE <= 0;
+            StallM <= 0;
+            StallW <= 0;
 
-                Forward1E <= 0;
-                Forward2E <= 0;
-            end // if (CpuRst == 1'b1)
-        else
-          begin
-                if (JalD == 1'b1)
-                    begin
-                        FlushF <= 0;
-                        FlushD <= 1;
-                        FlushE <= 0;
-                        FlushM <= 0;
-                       FlushW <= 0;
-                    end
-                else if ((JalrE == 1'b1) || (BranchE == 1'b1))
-                    begin
-                        FlushF<=0;
-                        FlushD<=1;
-                        FlushE<=1;
-                        FlushW<=0;
-                        FlushM<=0;
-                    end
-                else if(MemToRegE != 1'b0 && 
-                    (
-                        ((RdE == Rs1D) && (RegReadE[1] == 1'b1)) ||
-                        ((RdE == Rs2D) && (RegReadE[0] == 1'b1))
-                    )
-                )
-                    begin
-                        FlushF<=0;
-                        FlushD<=0;
-                        FlushE<=1;
-                        FlushW<=0;
-                        FlushM<=0;
-                    end // if (MemToRegE != 1'b0 &&...
-                else
-                  begin
-                     FlushF <= 0;
-                     FlushD <= 0;
-                     FlushE <= 0;
-                     FlushM <= 0;
-                     FlushW <= 0;
-                  end // else: !if(MemToRegE != 1'b0 &&...
+            Forward1E <= 0;
+            Forward2E <= 0;
+         end // if (CpuRst == 1'b1)
+       else
+         begin
+            if (JalD == 1'b1)
+              begin
+                 FlushF <= 0;
+                 FlushD <= 1;
+                 FlushE <= 0;
+                 FlushM <= 0;
+                 FlushW <= 0;
+              end
+            else if ((JalrE == 1'b1) || (BranchE == 1'b1))
+              begin
+                 FlushF<=0;
+                 FlushD<=1;
+                 FlushE<=1;
+                 FlushW<=0;
+                 FlushM<=0;
+              end
+            else if(MemToRegE != 1'b0 &&
+                    (((RdE == Rs1D) && (RegReadE[1] == 1'b1)) ||
+                     ((RdE == Rs2D) && (RegReadE[0] == 1'b1))))
+              begin
+                 FlushF<=0;
+                 FlushD<=0;
+                 FlushE<=1;
+                 FlushW<=0;
+                 FlushM<=0;
+              end // if (MemToRegE != 1'b0 &&...
+            else
+              begin
+                 FlushF <= 0;
+                 FlushD <= 0;
+                 FlushE <= 0;
+                 FlushM <= 0;
+                 FlushW <= 0;
+              end // else: !if(MemToRegE != 1'b0 &&...
 
-               if (MemToRegE != 1'b0 &&
-                   (((RdE == Rs1D) && (RegReadE[1] == 1'b1)) ||
-                    ((RdE == Rs2D) && (RegReadE[0] == 1'b1))))
-                 begin
-                    StallF <= 1'b1;
-                    StallD <= 1'b1;
-                 end
-               else
-                 begin
-                    StallF <= 1'b0;
-                    StallD <= 1'b0;
-                 end // else: !if(MemToRegE != 1'b0 &&...
+            if (MemToRegE != 1'b0 &&
+                (((RdE == Rs1D) && (RegReadE[1] == 1'b1)) ||
+                 ((RdE == Rs2D) && (RegReadE[0] == 1'b1))))
+              begin
+                 StallF <= 1'b1;
+                 StallD <= 1'b1;
+              end
+            else
+              begin
+                 StallF <= 1'b0;
+                 StallD <= 1'b0;
+              end // else: !if(MemToRegE != 1'b0 &&...
 
                //Forward Register Source 1
-               if (((RegWriteM != `NOREGWRITE) &&
-                    ((RdM == Rs1E) && (RegReadE[1] == 1'b1) &&
-                     (RdM != 5'b00000))))
-                 Forward1E <= 2'b10;
-               else if (((RegWriteW != `NOREGWRITE &&
-                          ((RdW == Rs1E) && (RegReadE[1] == 1'b1) &&
-                           (RdW != 5'b00000)))))
-                 Forward1E <= 2'b01;
-               else
-                 Forward1E <= 2'b00;
+            if (((RegWriteM != `NOREGWRITE) &&
+                 ((RdM == Rs1E) && (RegReadE[1] == 1'b1) &&
+                  (RdM != 5'b00000))))
+              Forward1E <= 2'b10;
+            else if (((RegWriteW != `NOREGWRITE &&
+                       ((RdW == Rs1E) && (RegReadE[1] == 1'b1) &&
+                        (RdW != 5'b00000)))))
+              Forward1E <= 2'b01;
+            else
+              Forward1E <= 2'b00;
 
                //Forward Register Source 2
-               if (((RegWriteM != `NOREGWRITE) && 
-                    (( RdM == Rs2E) && (RegReadE[0] == 1'b1) && 
-                     (RdM !=5'b00000))))
-                 Forward2E <= 2'b10;
-               else if (((RegWriteW != `NOREGWRITE) && 
-                         ((RdW == Rs2E) && (RegReadE[0] == 1'b1) && 
-                          (RdW != 5'b00000))))
-                 Forward2E <= 2'b01;
-               else
-                 Forward2E <= 2'b00;
-            end // else: !if(CpuRst == 1'b1)
+            if (((RegWriteM != `NOREGWRITE) && 
+                 (( RdM == Rs2E) && (RegReadE[0] == 1'b1) && 
+                  (RdM !=5'b00000))))
+              Forward2E <= 2'b10;
+            else if (((RegWriteW != `NOREGWRITE) && 
+                      ((RdW == Rs2E) && (RegReadE[0] == 1'b1) && 
+                       (RdW != 5'b00000))))
+              Forward2E <= 2'b01;
+            else
+              Forward2E <= 2'b00;
+         end // else: !if(CpuRst == 1'b1)
     end // always@ (*)
 endmodule // HarzardUnit
 
