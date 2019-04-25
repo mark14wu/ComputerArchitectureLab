@@ -2,3 +2,5 @@
 1_VerilogSourceCode/.DS_Store
 .DS_Store
 1_VerilogSourceCode/1_CPUCore_src/a.out
+1_VerilogSourceCode/1_CPUCore_src/testAll.data
+1_VerilogSourceCode/1_CPUCore_src/testAll.inst
