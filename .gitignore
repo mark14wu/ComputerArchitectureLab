@@ -4,3 +4,6 @@
 1_VerilogSourceCode/1_CPUCore_src/a.out
 1_VerilogSourceCode/1_CPUCore_src/testAll.data
 1_VerilogSourceCode/1_CPUCore_src/testAll.inst
+1_VerilogSourceCode/1_CPUCore_src/DataRamContent.txt
+1_VerilogSourceCode/1_CPUCore_src/InstRamContent.txt
+1_VerilogSourceCode/1_CPUCore_src/dump.vcd
