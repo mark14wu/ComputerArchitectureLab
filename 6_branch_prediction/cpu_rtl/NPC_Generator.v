@@ -23,15 +23,14 @@ module NPC_Generator(
     begin
         if(JalrE)
             PC_In <= JalrTarget;
-        else if(isBhtTaken)
-            PC_In <= BtbPCPred;
+        else if (isBhtTakenE != BranchE)
+            PC_In <= BranchE==1'b1 ? BranchTarget : PCE+4;
         else if(JalD)
             PC_In <= JalTarget;
+        else if(isBhtTaken)
+            PC_In <= BtbPCPred;
         else
             PC_In <= PCF+4;
-            
-        if (isBhtTakenE != BranchE)
-                PC_In <= BranchE==1'b1 ? BranchTarget : PCE+4;
 
     end
 endmodule
